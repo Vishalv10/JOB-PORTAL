@@ -1,0 +1,39 @@
+<!-- verified_users.html -->
+
+{% extends 'nav1.html' %}
+{% block content %}
+<style>
+    .container {
+        max-width: 700px;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    p {
+        margin-bottom: 15px;
+    }
+
+    .back-button {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container">
+    <h2>Verified Users</h2>
+
+    <!-- Display the list of verified users -->
+    {% for user in verified_users %}
+        <p>{{ user.name }} ({{ user.user_type }}) - Verified</p>
+    {% endfor %}
+
+    <!-- Back button to return to the main notifications page -->
+    <a href="{% url 'notifications' %}" class="back-button">
+        <button>Back to Notifications</button>
+    </a>
+</div>
+
+{% endblock %}

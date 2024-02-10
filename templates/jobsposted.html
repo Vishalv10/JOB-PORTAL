@@ -1,0 +1,139 @@
+<!-- jobsposted.html -->
+{% extends 'nav3.html' %}
+{% block content %}
+<style>
+    /* Add your custom styles here */
+
+    .job-post-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    .job-post-form {
+        display: grid;
+        grid-row-gap: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .post-button {
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .post-button:hover {
+        background-color: #2980b9;
+    }
+
+
+    #type {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    /* Optional: Customize the appearance of the dropdown arrow */
+    #type::-ms-expand,
+    #type::-webkit-inner-spin-button,
+    #type::-webkit-outer-spin-button {
+        display: none;
+    }
+
+    /* Optional: Style the dropdown arrow for Firefox */
+    #type {
+        -moz-appearance: none;
+        text-indent: 1px;
+        text-overflow: '';
+    }
+    
+</style>
+
+
+
+{% if messages %}
+        <div id="successMessage" style="color: green; margin-top: 10px;">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+{% endif %}
+
+
+<div class="job-post-container">
+    <h2>Post a Job</h2>
+
+    <form class="job-post-form" method="post" action="{% url 'post_job' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="designation">Job Designation:</label>
+            <input type="text" id="designation" name="designation" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Job Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="last_date">Last Date:</label>
+            <input type="date" id="last_date" name="last_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Job Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+
+        <div class="form-group">
+            <label for="type">Job Type:</label>
+            <select id="type" name="type" required>
+                <option value="full_time">Full Time</option>
+                <option value="part_time">Part Time</option>
+            </select>
+        </div>
+        
+
+        <div class="form-group">
+            <button type="submit" class="post-button">Post Job</button>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+

@@ -1,0 +1,265 @@
+{% extends 'nav.html' %}
+{% block content %}
+{% load static %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('{% static "images/a.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+    }
+
+    
+
+    h2 {
+        color: white;
+        margin-left: 105px;
+    }
+
+    form {
+        margin-top: 20px;
+        
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        {% comment %} margin-left: 230px; {% endcomment %}
+        color: white;
+    }
+
+    input {
+        {% comment %} margin-left: 230px; {% endcomment %}
+        width: 50%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .button-container {
+        text-align: center;
+    }
+
+    button.signup {
+        background-color: #4CAF50; /* Green color for Signup */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        display: block;
+        {% comment %} margin: 0 auto; {% endcomment %}
+        width: 50%;
+
+    }
+
+    button.clear {
+        background-color: #f44336; /* Red color for Clear */
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        display: block;
+        {% comment %} margin: 0 auto; {% endcomment %}
+        width: 50%;
+        margin-top: 5px;
+
+
+    }
+
+    .messages {
+        list-style-type: none;
+        padding: 10px;
+        background-color: #f44336; /* Red background color for error messages */
+        color: white; /* White text color for error messages */
+        border-radius: 4px;
+        margin-bottom: 15px;
+    }
+
+    .messages li {
+        margin-bottom: 5px;
+    }
+    
+    
+    
+    @media (max-width: 768px) {
+        h2, label, input {
+            margin-left: 0;
+            width: 100%;
+        }
+
+        .button-container {
+            width: 100%;
+        }
+
+        button.signup,
+        button.clear {
+            width: 100%;
+        }
+    }
+</style>
+      
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div class="container mt-5 form-container">
+    <h2>Job Seeker Signup</h2>
+
+    {% if form_errors %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    
+
+    <form action="{% url 'jobseeker_signup' %}" method="post" id="jobseekerForm" onsubmit="return validateForm()">
+        {% csrf_token %}
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter name" required oninput="validateInput(this)">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter Email" required oninput="validateInput(this)">
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="text" id="mobile" name="mobile" placeholder="Enter Number" required pattern="\d{10}" title="Please enter a valid 10-digit mobile number" oninput="validateInput(this)">
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" placeholder="Enter Date of Birth" required oninput="validateInput(this)">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter Username" required oninput="validateInput(this)">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter Password" required onclick="generatePassword()" oninput="validateInput(this)">
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" placeholder="Enter Password" name="confirm_password" required oninput="validateInput(this)">
+
+        <div class="button-container">
+            <button type="submit" class="signup">Signup</button>
+        </div>
+        
+        <div class="button-container">
+            <button type="button" class="clear" onclick="clearForm()">Clear</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function validateInput(inputElement) {
+        if (inputElement.checkValidity()) {
+            inputElement.style.backgroundColor = "lightgreen";
+        } else {
+            inputElement.style.backgroundColor = "";
+        }
+    }
+
+    function validateForm() {
+        var nameInput = document.getElementById("name");
+        if (!nameInput.checkValidity()) {
+            alert("Please enter your name.");
+            nameInput.focus();
+            return false;
+        }
+
+        var emailInput = document.getElementById("email");
+        if (!emailInput.checkValidity()) {
+            alert("Please enter a valid email.");
+            emailInput.focus();
+            return false;
+        }
+
+        var mobileInput = document.getElementById("mobile");
+        if (!mobileInput.checkValidity()) {
+            alert("Please enter a valid 10-digit mobile number.");
+            mobileInput.focus();
+            return false;
+        }
+
+        var dobInput = document.getElementById("dob");
+        if (!dobInput.checkValidity()) {
+            alert("Please enter your date of birth.");
+            dobInput.focus();
+            return false;
+        }
+
+        var usernameInput = document.getElementById("username");
+        if (!usernameInput.checkValidity()) {
+            alert("Please enter a valid username.");
+            usernameInput.focus();
+            return false;
+        }
+
+        var passwordInput = document.getElementById("password");
+        if (!passwordInput.checkValidity()) {
+            alert("Please enter a valid password.");
+            passwordInput.focus();
+            return false;
+        }
+
+        var confirmPasswordInput = document.getElementById("confirm_password");
+        if (!confirmPasswordInput.checkValidity()) {
+            alert("Please confirm your password.");
+            confirmPasswordInput.focus();
+            return false;
+        }
+
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            alert("Passwords do not match.");
+            confirmPasswordInput.focus();
+            return false;
+        }
+
+        return true;
+    }
+
+    function generatePassword() {
+        var length = 6;
+        var charset = "0123456789";
+        var password = "";
+        for (var i = 0; i < length; i++) {
+            var charIndex = Math.floor(Math.random() * charset.length);
+            password += charset.charAt(charIndex);
+        }
+        document.getElementById("password").value = password;
+        document.getElementById("confirm_password").value = password;
+        validateInput(document.getElementById("password"));
+        validateInput(document.getElementById("confirm_password"));
+    }
+
+    function clearForm() {
+        var form = document.getElementById("jobseekerForm");
+        for (var i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type !== "submit") {
+                form.elements[i].value = "";
+                form.elements[i].style.backgroundColor = "";
+            }
+        }
+    }
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

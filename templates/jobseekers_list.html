@@ -1,0 +1,143 @@
+<!-- jobseekers_list.html -->
+{% extends 'nav1.html' %}
+{% block content %}
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #495057;
+    }
+
+    h2 {
+      color: #007bff;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-left: 100px;
+    }
+
+    th, td {
+      border: 1px solid #dee2e6;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .verify-button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .verify-button:hover {
+      background-color: #218838;
+    }
+
+    .verified-badge {
+      color: #28a745;
+    }
+  </style>
+
+  <h2>Job Seekers List</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Mobile</th>
+      <th>Date of Birth</th>
+      <th>Username</th>
+      <th>Profile Picture</th>
+      <th>Educational Info</th>
+      <th>Address</th>
+      <th>Actions</th>
+    </tr>
+    {% for jobseeker in jobseekers %}
+      <tr>
+        <td>{{ jobseeker.name }}</td>
+        <td>{{ jobseeker.email }}</td>
+        <td>{{ jobseeker.mobile }}</td>
+        <td>{{ jobseeker.dob }}</td>
+        <td>{{ jobseeker.username }}</td>
+        <td>
+          {% if jobseeker.profile_picture %}
+            <img src="{{ jobseeker.profile_picture.url }}" alt="{{ jobseeker.name }}">
+          {% else %}
+            No Picture
+          {% endif %}
+        </td>
+        <td>{{ jobseeker.educational_info }}</td>
+        <td>{{ jobseeker.address }}</td>
+        <td>
+          {% if jobseeker.is_verified %}
+            <span id="verifiedBadge{{ jobseeker.id }}" class="verified-badge">Verified</span>
+          {% else %}
+            <button class="verify-button" onclick="verifyJobseeker('{{ jobseeker.id }}')">Verify</button>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <script>
+    function verifyJobseeker(jobseekerId) {
+      console.log('Verification button clicked for jobseeker ID:', jobseekerId);
+    
+      fetch(`/verify_jobseeker/${jobseekerId}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Verification response:', data);
+        if (data.status === 'success') {
+          const verifiedBadge = document.querySelector(`#verifiedBadge${jobseekerId}`);
+          verifiedBadge.innerHTML = 'Verified';
+        } else {
+          console.error('Verification failed.');
+        }
+      })
+      .catch(error => {
+        console.error('Error during verification:', error);
+      });
+    }
+    
+  </script>
+  
+  
+{% endblock %}
+
+
+
+
+
+

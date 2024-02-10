@@ -1,0 +1,103 @@
+<!-- rejected_jobs.html -->
+{% extends 'nav2.html' %}
+{% block content %}
+
+<style>
+    /* Add your custom styles here */
+  
+    .rejected-jobs-container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+  
+    h2 {
+      color: #3498db;
+    }
+  
+    .job-list {
+      list-style-type: none;
+      padding: 0;
+    }
+  
+    .job-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+      margin-bottom: 15px;
+    }
+  
+    .notification-info {
+      margin-bottom: 10px;
+    }
+  
+    .job-details {
+      margin-top: 10px;
+    }
+  
+    .details-and-image {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  
+    .details ul {
+      list-style-type: none;
+      padding: 0;
+    }
+  
+    .details li {
+      margin-bottom: 5px;
+    }
+  
+    .job-image {
+      max-width: 150px;
+      max-height: 150px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+  </style>
+
+  <div class="rejected-jobs-container">
+    <h2>Rejected Jobs</h2>
+    {% if rejected_jobs %}
+      <ul class="job-list">
+        {% for rejected_job in rejected_jobs %}
+          <li class="job-item">
+            <div class="notification-info">
+              {{ rejected_job.message }} {{ rejected_job.notification_type }}
+            </div>
+            {% if rejected_job.job %}
+              <div class="job-details">
+                <strong>Job Details:</strong>
+                <div class="details-and-image">
+                  <div class="details">
+                    <ul>
+                      <li><strong>Designation:</strong> {{ rejected_job.job.designation }}</li>
+                      <li><strong>Description:</strong> {{ rejected_job.job.description }}</li>
+                      <li><strong>Location:</strong> {{ rejected_job.job.location }}</li>
+                      <!-- Add other job details as needed -->
+                    </ul>
+                  </div>
+                  {% if rejected_job.job.image %}
+                    <div class="job-image">
+                      <img src="{{ rejected_job.job.image.url }}" alt="{{ rejected_job.job.designation }} Image" class="job-image">
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No rejected jobs at the moment.</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+

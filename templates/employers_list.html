@@ -1,0 +1,133 @@
+<!-- employers_list.html -->
+
+{% extends 'nav1.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #495057;
+      }
+  
+      h1 {
+        color: #007bff;
+        text-align: center;
+        margin-left: 100px;
+
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-left: 100px;
+
+      }
+  
+      th, td {
+        border: 1px solid #dee2e6;
+        padding: 12px;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #007bff;
+        color: white;
+      }
+  
+      tr:nth-child(even) {
+        background-color: #f8f9fa;
+      }
+  
+      img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+  
+      .verify-button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+  
+      .verify-button:hover {
+        background-color: #218838;
+      }
+  
+      .verified-badge {
+        color: #28a745;
+      }
+</style>
+
+<h1>Employers List</h1>
+<table>
+   <thead>
+      <tr>
+         <th>Company Name</th>
+         <th>Username</th>
+         <th>Email</th>
+         <th>Mobile</th>
+         <th>Logo</th>
+         <th>Website</th>
+         <th>Address</th>
+         <th>Action</th>
+      </tr>
+   </thead>
+   <tbody>
+      {% for employer in employers %}
+         <tr>
+            <td>{{ employer.company_name }}</td>
+            <td>{{ employer.username }}</td>
+            <td>{{ employer.email }}</td>
+            <td>{{ employer.mobile }}</td>
+            <td><img src="{{ employer.logo.url }}" alt="{{ employer.company_name }} Logo"></td>
+            <td>{{ employer.website }}</td>
+            <td>{{ employer.address }}</td>
+            <td>
+               {% if employer.is_verified %}
+                  <span id="verifiedBadge{{ employer.id }}" class="verified-badge">Verified</span>
+               {% else %}
+                  <button class="verify-button" onclick="verifyEmployer('{{ employer.id }}')">Verify</button>
+               {% endif %}
+            </td>
+         </tr>
+      {% endfor %}
+   </tbody>
+</table>
+
+<script>
+   function verifyEmployer(employerId) {
+      console.log('Verification button clicked for employer ID:', employerId);
+
+      fetch(`/verify_employer/${employerId}/`, {
+         method: 'POST',
+         headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+         },
+      })
+      .then(response => response.json())
+      .then(data => {
+         console.log('Verification response:', data);
+         if (data.status === 'success') {
+            const verifiedBadge = document.querySelector(`#verifiedBadge${employerId}`);
+            verifiedBadge.innerHTML = 'Verified';
+         } else {
+            console.error('Verification failed.');
+         }
+      })
+      .catch(error => {
+         console.error('Error during verification:', error);
+      });
+   }
+</script>
+{% endblock %}

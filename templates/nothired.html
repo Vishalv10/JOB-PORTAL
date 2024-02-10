@@ -1,0 +1,12 @@
+
+{% extends 'nav3.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Applicant Details</h2>
+    <p><strong>Name:</strong> {{ notification.applicant.jobseekerprofile.name }}</p>
+    <p><strong>Email:</strong> {{ notification.applicant.jobseekerprofile.email }}</p>
+    <p><strong>Mobile:</strong> {{ notification.applicant.jobseekerprofile.mobile }}</p>
+    <p><strong>Job Designation:</strong> {{ notification.job.designation }}</p>
+    <!-- Add other applicant details you want to display -->
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!-- applicant_details.html -->
+{% extends 'nav3.html' %}
+{% block content %}
+<style>
+    .applicant-details-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+        display: flex; /* Use flexbox for layout */
+        justify-content: space-between; /* Space between items */
+        align-items: flex-start; /* Align items to the start (top) */
+        flex-wrap: wrap; /* Allow items to wrap to the next line */
+    }
+
+    h2 {
+        color: #3498db;
+        width: 100%; /* Ensure h2 takes full width */
+    }
+
+    .applicant-info {
+        width: 48%; /* Set width for the information section */
+        box-sizing: border-box; /* Include padding and border in the width */
+    }
+
+    .applicant-info img {
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .no-picture {
+        font-style: italic;
+        color: #888;
+        margin-top: 10px;
+    }
+</style>
+<div class="applicant-details-container">
+    <h2>Applicant Details</h2>
+    <div class="applicant-info">
+        <p><strong>Job Designation:</strong> {{ notification.job.designation }}</p>
+        <p><strong>Name:</strong> {{ notification.applicant.jobseekerprofile.name }}</p>
+        <p><strong>Email:</strong> {{ notification.applicant.jobseekerprofile.email }}</p>
+        <p><strong>Mobile:</strong> {{ notification.applicant.jobseekerprofile.mobile }}</p>
+        <p><strong>Education:</strong> {{ notification.applicant.jobseekerprofile.educational_info }}</p>
+    </div>
+    
+    <div class="applicant-info">
+        {% if notification.applicant.jobseekerprofile.profile_picture %}
+            <img src="{{ notification.applicant.jobseekerprofile.profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+            <p class="no-picture">No Profile Picture</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'nav.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Job Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            margin-top: 9px;
+            text-align: center;
+        }
+
+        .testimonials {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .testimonial {
+            width: 100%;
+            margin: 10px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: yellow;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-icons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+            font-size: 30px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .social-icons a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Job Portal</h1>
+    </header>
+
+    <section>
+        <h2>Find Your Dream Job</h2>
+        <p>Welcome to Job Portal, where your career journey begins.</p>
+        <img src="static/images/job1.jpg" class="img-fluid" alt="Responsive image">
+    </section>
+
+    <section>
+        <h2>What Our Users Say</h2>
+        <div class="testimonials">
+            <div class="testimonial">
+                <p>Great platform! I found my dream job within weeks.</p>
+                <p>- John Doe</p>
+            </div>
+            <div class="testimonial">
+                <p>The job search process was seamless. Highly recommended!</p>
+                <p>- Jane Smith</p>
+            </div>
+            <div class="testimonial">
+                <p>Using Your Job Portal made job hunting a breeze. The filtering options and user-friendly interface made the process efficient and enjoyable.</p>
+                <p>- Sarah Johnson</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="social-icons">
+        <a href="" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="" target="_blank">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="" target="_blank">
+            <i class="fab fa-twitter"></i>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Your Job Portal. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and Popper.js links -->
+    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+{% endblock %}

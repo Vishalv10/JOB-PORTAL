@@ -1,0 +1,139 @@
+<!-- edit_jobseeker_profile.html -->
+{% extends 'nav2.html' %}
+{% block content %}
+<style>
+    /* Add these styles to your CSS file or style section */
+
+    .card {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        height: 150px; /* Adjust as needed */
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    p.no-picture-message {
+        color: #888;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .alert {
+        padding: 10px;
+        margin-bottom: 15px;
+        {% comment %} border: 1px solid transparent;
+        border-radius: 5px; {% endcomment %}
+    }
+
+    .alert-danger {
+        color: #721c24;
+        {% comment %} background-color: #f8d7da; {% endcomment %}
+        {% comment %} border-color: #f5c6cb; {% endcomment %}
+    }
+    
+</style>
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+{% endif %}
+
+<div class="card">
+
+    <h2>Edit Job Seeker Profile</h2>
+    
+    <form method="post" action="{% url 'edit_jobseeker_profile' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ jobseeker_profile.name }}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ jobseeker_profile.email }}" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+
+        <label for="mobile">Mobile:</label>
+        <input type="text" id="mobile" name="mobile" value="{{ jobseeker_profile.mobile }}" required pattern="[0-9]{10}" title="Please enter a 10-digit mobile number">
+        
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" value="{{ jobseeker_profile.dob|date:'Y-m-d' }}" required>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ jobseeker_profile.username }}" required>
+
+        <label for="profile_picture">Profile Picture:</label>
+    {% if jobseeker_profile.profile_picture %}
+        <img src="{{ jobseeker_profile.profile_picture.url }}" alt="Current Profile Picture" style="max-width: 200px;">
+    {% else %}
+        <p>No current profile picture</p>
+    {% endif %}
+    <input type="file" id="profile_picture" name="profile_picture">
+
+    
+        <label for="educational_info">Educational Information:</label>
+        <textarea id="educational_info" name="educational_info" required >{{ jobseeker_profile.educational_info }}</textarea>
+    
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" required >{{ jobseeker_profile.address }}</textarea>
+    
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+{% endblock %}
+
+
+

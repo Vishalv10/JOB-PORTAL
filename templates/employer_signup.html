@@ -1,0 +1,250 @@
+{% extends 'nav.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('{% static "images/a.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+    }
+    h2 {
+        color: white;
+        margin-left: 15px;
+    }
+
+    label {
+        display: block;
+        margin-top: 2px;
+        margin-left: 15px;
+        font-weight: bold;
+        color: white;
+
+    }
+
+    input,
+    textarea {
+        margin-left: 15px;
+        width: calc(100% - 30px);
+        padding: 10px; 
+        margin-bottom: 2px;
+        box-sizing: border-box;
+        border: 1px solid #ccc; 
+        border-radius: 4px;
+        font-size: 16px; 
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(81, 203, 238, 1); 
+    }
+
+    .button-container {
+        text-align: center;
+    }
+
+    button.signup,
+    button.clear {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px; 
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        display: block;
+        margin: 0 auto;
+        width: calc(50% - 30px);
+        font-size: 16px;
+        margin-top: 5px;
+        margin-left: 15px;
+
+
+    }
+
+    button.clear {
+        background-color: red;
+        margin-top: 5px;
+    }
+
+    input:valid:not(:placeholder-shown):not(#website),
+    textarea:valid:not(:placeholder-shown) {
+        background-color: lightgreen;
+    }
+
+    input:invalid:not(:placeholder-shown),
+    textarea:invalid:not(:placeholder-shown) {
+        background-color: white; 
+    }
+
+    .messages {
+        background-color: #ff9999;
+        color: #990000;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+
+    .messages p {
+        margin: 0;
+    }
+
+    @media (min-width: 768px) {
+        h2,
+        label,
+        input{
+            width: 50%;
+        }
+
+        .button-container {
+            width: 50%;
+        }
+
+        button.signup,
+        button.clear {
+            width: 100%;
+
+        }
+    }
+</style>
+
+
+<div class="container mt-5">
+{% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h2>Employer Signup</h2>
+
+    <form action="{% url 'employer_signup' %}" method="post" id="employerForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name" required minlength="5">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required oninput="checkUsernameAvailability()" pattern="[a-zA-Z0-9_]+" title="Only letters, numbers, and underscores are allowed">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required oninput="checkEmailAvailability()">
+
+        <label for="mobile">Mobile Number:</label>
+        <input type="text" id="mobile" name="mobile" required pattern="\d{10}" title="Please enter a valid 10-digit mobile number">
+
+        <label for="logo">Company Logo:</label>
+        <input type="file" id="logo" name="logo" accept="image/*" required>
+
+        <label for="website">Company Website:</label>
+        <input type="url" id="website" name="website" pattern="https?://.*" title="Include http:// or https://" required> 
+
+        <label for="address">Company Address:</label>
+        <input type="text" name="address" rows="4" required></input>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" required>
+
+        <div class="button-container">
+            <button type="submit" class="signup">Signup</button>
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="clear" onclick="clearForm()">Clear</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function clearForm() {
+        var form = document.getElementById("employerForm");
+        for (var i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type !== "submit" && form.elements[i].type !== "file") {
+                form.elements[i].value = "";
+                form.elements[i].style.backgroundColor = ""; 
+            }
+        }
+
+        document.getElementById("logo").value = "";
+    }
+
+    document.getElementById("password").addEventListener("click", function () {
+        var passwordField = document.getElementById("password");
+        var confirmPasswordField = document.getElementById("confirm_password");
+
+        var randomPassword = generateRandomPassword();
+
+        passwordField.value = randomPassword;
+        confirmPasswordField.value = randomPassword;
+        validateInput(passwordField);
+        validateInput(confirmPasswordField);
+    });
+
+    function generateRandomPassword() {
+        var charset = "0123456789";
+        var password = "";
+        for (var i = 0; i < 6; i++) {
+            var randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset.charAt(randomIndex);
+        }
+        return password;
+    }
+
+    var inputFields = document.querySelectorAll('input, textarea');
+    inputFields.forEach(function (inputField) {
+        inputField.addEventListener('input', function () {
+            validateInput(inputField);
+        });
+    });
+
+    function validateInput(inputElement) {
+        if (inputElement.checkValidity() && inputElement.value.trim() !== "") {
+            inputElement.style.backgroundColor = "lightgreen";
+        } else {
+            inputElement.style.backgroundColor = "";
+        }
+    }
+
+    function checkUsernameAvailability() {
+        var usernameField = document.getElementById("username");
+        var availabilityMessage = document.getElementById("usernameAvailability");
+
+        setTimeout(function () {
+            if (usernameField.value.toLowerCase() === "existingusername") {
+                usernameField.setCustomValidity("Username already taken");
+            } else {
+                usernameField.setCustomValidity("");
+            }
+            validateInput(usernameField);
+        }, 500);
+    }
+
+    function checkEmailAvailability() {
+        var emailField = document.getElementById("email");
+        var availabilityMessage = document.getElementById("emailAvailability");
+
+        setTimeout(function () {
+            if (emailField.value.toLowerCase() === "existingemail@example.com") {
+                emailField.setCustomValidity("Email already taken");
+            } else {
+                emailField.setCustomValidity("");
+            }
+            validateInput(emailField);
+        }, 500);
+    }
+</script>
+{% endblock %}
+
+
+
+
+

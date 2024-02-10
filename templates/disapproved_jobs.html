@@ -1,0 +1,122 @@
+{% extends 'nav1.html' %}
+{% block content %}
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        width: 100%;
+        color: #333;
+    }
+
+    p {
+        width: 100%;
+        color: #6c757d;
+    }
+
+    .mb-3 {
+        margin-bottom: 20px;
+    }
+
+    .btn-primary {
+        padding: 8px 12px;
+        background-color: #007bff; 
+        color: white;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3; 
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+    }
+
+    li {
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 90%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    img {
+        max-width: 100px;
+        height: auto;
+        margin-right: 20px;
+    }
+
+    div {
+        flex-grow: 1;
+    }
+
+    strong {
+        margin-bottom: 5px;
+    }
+
+    form {
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 8px 12px;
+        background-color: #28a745; 
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #218838; 
+    }
+</style>
+
+<div class="container mt-5">
+    <h2>Disapproved Jobs</h2>
+    <p>These jobs are currently disapproved.</p>
+
+    <!-- Button to switch to approved jobs -->
+    <div class="mb-3">
+        <a href="{% url 'admin_jobs' %}" class="btn btn-primary">View Approved Jobs</a>
+    </div>
+
+    <ul>
+        {% for disapproved_job in disapproved_jobs %}
+            <li>
+                {% if disapproved_job.image %}
+                    <img src="{{ disapproved_job.image.url }}" alt="{{ disapproved_job.designation }} Image">
+                {% endif %}
+                <div>
+                    <strong>Company Name:</strong> {{ disapproved_job.employer_profile.company_name }}<br>
+                    <strong>Designation:</strong> {{ disapproved_job.designation }}<br>
+                    <strong>Description:</strong> {{ disapproved_job.description }}<br>
+                    <strong>Location:</strong> {{ disapproved_job.location }}<br>
+                    <strong>Job Type:</strong> {{ disapproved_job.type }}<br>
+                    <strong>Last Date:</strong> {{ disapproved_job.last_date }}<br>
+                    <strong>Posting Date:</strong> {{ disapproved_job.posting_date }}<br>
+                </div>
+                <form method="post" action="{% url 'approve_job' disapproved_job.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Approve</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

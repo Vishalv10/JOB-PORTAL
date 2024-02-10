@@ -1,0 +1,247 @@
+{% extends 'nav1.html' %}
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    h2, h3 {
+        color: #007bff;
+    }
+
+    p {
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 8px 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a button {
+        background-color: #28a745;
+    }
+
+    a button:hover {
+        background-color: #218838;
+    }
+
+    strong {
+        color: #28a745;
+    }
+
+    span {
+        color: #6c757d;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2>Notifications</h2>
+
+    <!-- Display new job seeker notifications -->
+    <h3>New Job Seeker Signups</h3>
+    {% for notification in new_jobseeker_notifications %}
+        {% if not notification.is_read %}
+            <p>
+                {{ notification.name }} has signed up as a job seeker.
+                {% if not notification.profile.is_approved %}
+                    <button id="approveButton-{{ notification.id }}" onclick="approveJobSeeker({{ notification.id }})">Approve</button>
+                {% else %}
+                    <strong>Approved</strong>
+                {% endif %}
+                {% if not notification.profile.is_blocked %}
+                    <button id="blockButton-{{ notification.id }}" onclick="blockJobSeeker({{ notification.id }})">Block</button>
+                {% else %}
+                    <span>Blocked</span>
+                {% endif %}
+            </p>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Display new employer notifications -->
+    <h3>New Employer Signups</h3>
+    {% for notification in new_employer_notifications %}
+        {% if not notification.is_read %}
+            <p>
+                {{ notification.company_name }} has signed up as an employer.
+                {% if not notification.profile.is_approved %}
+                    <button id="approveButton-{{ notification.id }}" onclick="approveEmployer({{ notification.id }})">Approve</button>
+                {% else %}
+                    <span>Approved</span>
+                {% endif %}
+                {% if not notification.profile.is_blocked %}
+                    <button id="blockButton-{{ notification.id }}" onclick="blockEmployer({{ notification.id }})">Block</button>
+                {% else %}
+                    <span>Blocked</span>
+                {% endif %}
+            </p>
+        {% endif %}
+    {% endfor %}
+
+    <!-- Display job posted notifications -->
+    <h3>Job Posted Notifications</h3>
+    {% for notification in job_posted_notifications %}
+        {% if not notification.is_read %}
+            <p>
+                <strong>Unread</strong>
+                <a href="{% url 'job_details' notification_id=notification.id %}">
+                    <button>{{ notification.employer_profile.company_name }} has posted a job: {{ notification.jobs.designation }}.</button>
+                </a>
+            </p>
+        {% endif %}
+    {% endfor %}
+
+
+
+<!-- Display job application notifications -->
+    {% comment %} <h3>Job Application Notifications</h3>
+    {% for notification in job_application_notifications %}
+        {% if not notification.is_read %}
+            <p>
+                <strong>Unread</strong>
+                {{ notification.job_seeker.username }} has applied for a job: {{ notification.jobs.designation }}.
+            </p>
+        {% endif %}
+    {% endfor %} {% endcomment %}
+
+
+    
+    <h3>Job Application Notifications</h3>
+    {% for notification in job_application_notifications %}
+        {% if not notification.is_read %}
+            <p>
+                {% comment %} <strong>Unread</strong> {% endcomment %}
+                {{ notification.job_seeker.username }} has applied for a job: {{ notification.jobs.designation }}.
+                <a href="{% url 'mark_notification_as_read' notification_id=notification.id %}">Mark as Read</a>
+            </p>
+        {% endif %}
+    {% endfor %}
+
+
+
+
+</div>
+
+<script>
+    // Your JavaScript code here
+    function approveJobSeeker(notificationId) {
+        fetch(`/approve_jobseeker/${notificationId}/`)
+            .then(response => {
+                if (response.ok) {
+                    console.log('Job Seeker approved successfully');
+                    const approveButton = document.getElementById(`approveButton-${notificationId}`);
+                    approveButton.textContent = 'Approved';
+                    approveButton.disabled = true;
+
+                    // Optional: Update UI or perform additional actions
+                } else {
+                    console.error('Error approving Job Seeker');
+                }
+            })
+            .catch(error => {
+                console.error('Error approving Job Seeker', error);
+            });
+    }
+
+
+    function blockJobSeeker(notificationId) {
+        fetch(`/block_jobseeker/${notificationId}/`)
+            .then(response => {
+                if (response.ok) {
+                    console.log('Job Seeker blocked successfully');
+                    const blockButton = document.getElementById(`blockButton-${notificationId}`);
+                    blockButton.textContent = 'Blocked';
+                    blockButton.disabled = true;
+
+                    // You may want to handle additional UI changes here if needed
+                } else {
+                    console.error('Error blocking Job Seeker');
+                }
+            })
+            .catch(error => {
+                console.error('Error blocking Job Seeker', error);
+            });
+    }
+
+    function approveEmployer(notificationId) {
+        fetch(`/approve_employer/${notificationId}/`)
+            .then(response => {
+                if (response.ok) {
+                    console.log('Employer approved successfully');
+                    const approveButton = document.getElementById(`approveButton-${notificationId}`);
+                    approveButton.textContent = 'Approved';
+                    approveButton.disabled = true;
+
+                    // Optional: Update UI or perform additional actions
+                } else {
+                    console.error('Error approving Employer');
+                }
+            })
+            .catch(error => {
+                console.error('Error approving Employer', error);
+            });
+    }
+
+    
+    function blockEmployer(notificationId) {
+        fetch(`/block_employer/${notificationId}/`)
+            .then(response => {
+                if (response.ok) {
+                    console.log('Employer blocked successfully');
+                    const blockButton = document.getElementById(`blockButton-${notificationId}`);
+                    blockButton.textContent = 'Blocked';
+                    blockButton.disabled = true;
+
+                    // You may want to handle additional UI changes here if needed
+                } else {
+                    console.error('Error blocking Employer');
+                }
+            })
+            .catch(error => {
+                console.error('Error blocking Employer', error);
+            });
+    }
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+

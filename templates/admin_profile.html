@@ -1,0 +1,77 @@
+{% extends 'nav1.html' %}
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <div class="profile-card">
+        <div class="profile-card-body">
+            <h2 class="profile-card-title">Admin Profile</h2>
+            <p class="profile-card-text"><strong>Username:</strong> {{ admin_user.username }}</p>
+            <p class="profile-card-text"><strong>Email:</strong> {{ admin_user.email }}</p>
+            <p class="profile-card-text"><strong>Password:</strong> ********</p>
+
+            <a href="{% url 'edit_admin_profile' %}" class="btn btn-success edit-profile-button">Edit Profile</a>
+            <a href="{% url 'update_admin_password' %}" class="btn btn-primary update-password-button">Update Password</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 300px;
+        margin: 0 auto;
+        margin-top: 100px;
+        transition: transform 0.3s;
+    }
+
+    .profile-card:hover {
+        transform: scale(1.05);
+    }
+
+    .profile-card-body {
+        padding: 30px;
+        text-align: center;
+    }
+
+    .profile-card-title {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    .profile-card-text {
+        margin-bottom: 12px;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-top: 15px;
+    }
+
+    .btn:hover {
+        filter: brightness(90%);
+    }
+
+    .edit-profile-button {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .update-password-button {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+<!-- employer_profile.html -->
+
+{% extends 'nav3.html' %}
+{% block content %}
+    <div class="profile-container">
+        <div class="logo-container">
+            <img class="logo" src="{{ employer_profile.logo.url }}" alt="Employer Logo">
+        </div>
+
+        <h2 class="company-name">
+            <strong>Company Name:</strong> {{ employer_profile.company_name }}
+            {% if employer_profile.is_verified %}
+                <span class="verification-badge">&#10004;</span>
+            {% else %}
+                <span class="verification-badge">&#10008;</span>
+            {% endif %}
+            
+            
+        </h2>
+
+        <p><strong>Username:</strong> {{ employer_profile.username }}</p>
+        <p><strong>Email:</strong> {{ employer_profile.email }}</p>
+        <p><strong>Mobile:</strong> {{ employer_profile.mobile }}</p>
+        <p><strong>Website:</strong> {{ employer_profile.website }}</p>
+        <p><strong>Address:</strong> {{ employer_profile.address }}</p>
+
+        <a class="edit-link" href="{% url 'edit_employer_profile' %}">
+            <button class="edit-button">Edit Profile</button>
+        </a>
+    </div>
+    <style>
+        /* Add your custom styles here */
+
+        .profile-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .company-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .verification-icon {
+            color: green;
+        }
+
+        .verification-icon.error {
+            color: red;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .edit-link {
+            display: inline-block; /* Use inline-block to allow styling of the button */
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .edit-button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .edit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+{% endblock %}
+

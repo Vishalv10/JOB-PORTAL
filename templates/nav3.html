@@ -1,0 +1,127 @@
+
+<!-- nav3.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0; /* Remove default body margin */
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            width: 150px;
+            left: 0; /* Position navbar at the left */
+            top: 0; /* Position navbar at the top */
+        }
+
+        .navbar-brand {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .navbar-nav {
+            margin-top: 20px;
+        }
+
+        .nav-item {
+            padding: 10px 0;
+        }
+
+        .dropdown-menu {
+            background-color: #343a40;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+
+        .content-container {
+            margin-left: 300px;
+            padding: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .fa-bell {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="navbar-brand">
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'employer' %}">Dashboard</a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'employer_account' %}">Account</a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'jobposted' %}">Post Jobs</a>
+        <br>
+        <br>
+        <br>
+        {% comment %} <a href="{% url 'employer_notifications' %}"> {% endcomment %}
+        <a href="{% url 'employer_notifications' %}">
+            Notifications
+        </a>
+        <br>
+        <br>
+        <br>
+        <a href="javascript:void(0);" onclick="confirmLogout()">Logout</a>
+
+    </div>
+</nav>
+
+<div class="content-container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script>
+    function confirmLogout() {
+        // Display a confirmation dialog
+        var result = confirm("Are you sure you want to logout?");
+
+        // If the user clicks "OK," proceed with logout
+        if (result) {
+            window.location.href = "{% url 'logoutviews' %}"; // Redirect to logout view
+        }
+    }
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

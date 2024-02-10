@@ -1,0 +1,102 @@
+<!-- jobseeker_profile.html -->
+{% extends 'nav2.html' %}
+{% block content %}
+
+<style>
+    /* Add these styles to your CSS file or style section */
+
+    .profile-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-username {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .verification-badge {
+        color: green;
+        font-size: 16px;
+        margin-left: 5px;
+    }
+    
+    .profile-details {
+        margin-bottom: 20px;
+    }
+    
+    .profile-info {
+        margin-bottom: 10px;
+    }
+    
+    .profile-picture {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    
+    .no-picture-message {
+        color: #888;
+    }
+    
+    .profile-actions {
+        margin-top: 20px;
+    }
+    
+    .profile-action-link {
+        display: inline-block;
+        margin-right: 20px;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .profile-action-link:hover {
+        background-color: #0056b3;
+    }
+    
+</style>
+
+<div class="profile-container">
+    {% if jobseeker_profile.profile_picture %}
+        <img class="profile-picture" src="{{ jobseeker_profile.profile_picture.url }}" alt="Profile Picture">
+    {% else %}
+        <p class="no-picture-message">No profile picture available</p>
+    {% endif %}
+
+    <h2 class="profile-username">{{ jobseeker_profile.username }}
+        {% if jobseeker_profile.is_verified %}
+            <span class="verification-badge">&#10004;</span>
+        {% else %}
+            <span class="verification-badge">&#10008;</span>
+        {% endif %}
+        
+    </h2>
+
+    <div class="profile-details">
+        <p class="profile-info">Name: {{ jobseeker_profile.name }}</p>
+        <p class="profile-info">Email: {{ jobseeker_profile.email }}</p>
+        <p class="profile-info">Mobile: {{ jobseeker_profile.mobile }}</p>
+        <p class="profile-info">Date of Birth: {{ jobseeker_profile.dob }}</p>
+    </div>
+
+    <p class="profile-info">Educational: {{ jobseeker_profile.educational_info }}</p>
+    <p class="profile-info">Address: {{ jobseeker_profile.address }}</p>
+
+    
+    <div class="profile-actions">
+        <a class="profile-action-link" href="{% url 'edit_jobseeker_profile' %}">Edit Profile</a>
+        <a class="profile-action-link" href="{% url 'update_password' %}">Update Password</a>
+    </div>
+</div>
+{% endblock %}
+
+

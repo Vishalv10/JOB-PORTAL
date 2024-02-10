@@ -1,0 +1,93 @@
+<!-- employer_notifications.html -->
+{% extends 'nav3.html' %}
+{% block content %}
+<div class="notification-container">
+    <div class="unread-notifications">
+        <h2>Notifications</h2>
+        <ul>
+            {% for notification in unread_notifications %}
+                {% if notification.notification_type == 'applied' %}
+                    <li>
+                        <strong>{{ notification.applicant.username }}</strong> applied for the job
+                        <strong>{{ notification.job.designation }}</strong>
+                        on {{ notification.application_date }}
+                        <a href="{% url 'applicant_details' notification.id %}" class="view-details-link">View Applicant Details</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <hr>
+
+    {% comment %} <div class="read-notifications">
+        <h2>Read Notifications</h2>
+        <ul>
+            {% for notification in read_notifications %}
+                {% if notification.notification_type == 'applied' %}
+                    <li>
+                        <strong>{{ notification.applicant.username }}</strong> applied for the job
+                        <strong>{{ notification.job.designation }}</strong>
+                        on {{ notification.application_date }} (Viewed)
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div> {% endcomment %}
+</div>
+<style>
+    /* Add your custom styles here */
+
+    .notification-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    .unread-notifications,
+    .read-notifications {
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #3498db;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+
+    .view-details-link {
+        color: #3498db;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    .view-details-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

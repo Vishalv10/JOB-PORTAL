@@ -1,0 +1,45 @@
+<!-- jobseeker_notification.html -->
+{% extends 'nav2.html' %}
+{% block content %}
+<div class="jobseeker-notifications-container">
+    <h2>Notifications</h2>
+    {% for notification in notifications %}
+        <div class="notification-item unread">
+            <p>{{ notification.message }}</p>
+        </div>
+    {% endfor %}
+</div>
+<style>
+    /* Add your custom styles here */
+
+    .jobseeker-notifications-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+    }
+
+    h2 {
+        color: #3498db;
+    }
+
+    .notification-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .unread {
+        background-color: #f5f5f5;
+    }
+</style>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,15 @@
+<!-- job_not_approved.html -->
+
+{% extends 'nav1.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h2>Job Details</h2>
+    <p>This job is pending approval and cannot be displayed to users yet.</p>
+    {% if user.is_staff %}
+      <form method="post" action="{% url 'approve_job' job.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Approve Job</button>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

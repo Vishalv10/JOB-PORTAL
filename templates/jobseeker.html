@@ -1,0 +1,357 @@
+{% extends 'nav2.html' %}
+{% block content %}
+
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .text-primary {
+        color: #007bff; /* Bootstrap's primary color */
+    }
+
+    h3 {
+        width: 100%;
+        color: #333;
+    }
+
+    form {
+        display: flex;
+        align-items: flex-end;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        width: 90%;
+    }
+
+    li {
+        display: flex;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    img {
+        max-width: 130px;
+        height: auto;
+        margin-right: 20px;
+    }
+
+    .job-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .job-details strong {
+        margin-bottom: 5px;
+    }
+
+    {% comment %} .filter-button {
+        padding: 8px 12px;
+        background-color: #007bff; /* Bootstrap's primary color */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px; /* Adjust margin for spacing */
+    }
+
+    .filter-button:hover {
+        background-color: #0056b3; /* Slightly darker shade on hover */
+    } {% endcomment %}
+
+    .apply-button {
+        padding: 8px 12px;
+        background-color: #28a745; 
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: auto; 
+    }
+
+    .apply-button:hover {
+        background-color: #218838; 
+    }
+    .popup-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+
+    /* Style for the close button */
+    .popup-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+        /* Style for the filter form */
+    .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    /* Style for form groups within the filter form */
+    .form-group {
+        flex: 0 0 48%; /* Adjust the width as needed */
+        margin-bottom: 10px;
+    }
+
+    /* Style for form labels */
+    .filter-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    /* Style for form inputs and select */
+    .filter-form input,
+    .filter-form select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 5px;
+    }
+
+    /* Style for the Apply Filters button */
+    .filter-form button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .filter-form button:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+
+<div class="container mt-5 text-center">
+    {% comment %} <div class="container mt-5 text-center">
+        {% if show_popup %}
+        <div class="popup-container" id="profilePopup">
+            <span class="popup-close" onclick="closeProfilePopup()">&times;</span>
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% comment %} <p>Your profile is incomplete. Please complete it to enhance your jobseeker experience.</p> {% endcomment %}
+        </div>
+        {% comment %} {% endif %} {% endcomment %}
+    
+
+
+
+
+
+
+
+        {% if show_popup %}
+        <div class="popup-container" id="profilePopup">
+            <span class="popup-close" onclick="closeProfilePopup()">&times;</span>
+            <p>Your profile is incomplete. Please complete it.</p>
+        </div>
+    {% endif %}
+
+
+
+
+
+
+    
+    {% comment %} {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+    {% if show_popup %}
+    <div class="popup-container" id="profilePopup">
+        <span class="popup-close" onclick="closeProfilePopup()">&times;</span>
+        <p>Your profile is incomplete. Please complete it to enhance your jobseeker experience.</p>
+    </div>
+{% endif %} {% endcomment %}
+
+
+
+    <h2 class="text-primary">Jobs {{ jobseeker.username }}!</h2>
+    
+   
+    <form method="get" action="{% url 'filter_jobs' %}" class="filter-form">
+        <div class="form-group">
+            <label for="designation">Designation:</label>
+            <input type="text" name="designation" id="designation">
+        </div>
+    
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" name="location" id="location">
+        </div>
+    
+        <div class="form-group">
+            <label for="job_type">Job Type:</label>
+            <select name="job_type" id="job_type">
+                <option value="">Job Type</option>
+                <option value="full_time">Full Time</option>
+                <option value="part_time">Part Time</option>
+                <!-- Add more job types as needed -->
+            </select>
+        </div>
+    
+        <div class="form-group">
+            <label for="last_date">Last Date (by month):</label>
+            <input type="month" name="last_date" id="last_date">
+        </div>
+    
+        <button type="submit" class="filter-button">Apply Filters</button>
+    </form>
+    
+    
+    
+    
+
+
+    <ul>
+        {% for job in jobs %}
+            {% if job.is_approved %}
+                <li>
+                    {% if job.image %}
+                        <img src="{{ job.image.url }}" alt="{{ job.designation }} Image">
+                    {% endif %}
+                    <div class="job-details">
+
+                        <strong> Company:
+                            {{ job.employer_profile.company_name }}
+                            {% if job.employer_profile.is_verified %}
+                                <span class="verified-mark" title="Verified Company">&#10004;</span>
+                            {% endif %}
+                        </strong><br>
+
+                        <strong>Designation:</strong> {{ job.designation }}<br>
+                        <strong>Description:</strong> {{ job.description }}<br>
+                        <strong>Location:</strong> {{ job.location }}<br>
+                        <strong>Job Type:</strong> {{ job.type }}<br>
+                        <strong>Last Date:</strong> {{ job.last_date }}<br>
+                        <strong>Posting Date:</strong> {{ job.posting_date }}<br><br>
+
+                        <form method="post" action="{% url 'apply_job' job.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="apply-button">Apply</button>
+                        </form>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+<script>
+{% comment %}    
+    function closeProfilePopup() {
+        document.getElementById('profilePopup').style.display = 'none';
+    }
+    
+     {% endcomment %}
+     
+
+
+        function closeProfilePopup() {
+            document.getElementById('profilePopup').style.display = 'none';
+        }
+    
+        // Add the following code to show the popup when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the popup should be shown
+            var showPopup = {{ show_popup|yesno:"true,false" }};
+    
+            if (showPopup) {
+                document.getElementById('profilePopup').style.display = 'block';
+            } else {
+                // Hide the popup if the profile is complete
+                document.getElementById('profilePopup').style.display = 'none';
+            }
+        });
+
+    
+
+
+
+
+
+     {% comment %} function closeProfilePopup() {
+        document.getElementById('profilePopup').style.display = 'none';
+    }
+
+    // Add the following code to show the popup when the page loads
+    document.addEventListener('DOMContentLoaded', function () {
+        // Check if the popup should be shown
+        var showPopup = {{ show_popup|yesno:"true,false" }};
+
+        if (showPopup) {
+            document.getElementById('profilePopup').style.display = 'block';
+        }
+    });
+     {% endcomment %}
+</script>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

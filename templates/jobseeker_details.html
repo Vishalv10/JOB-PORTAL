@@ -1,0 +1,13 @@
+<!-- jobseeker_details.html -->
+{% extends 'nav1.html' %}
+
+{% block content %}
+    <h2>{{ jobseeker.name }} Details</h2>
+    <!-- Display job seeker details here -->
+    <!-- You can customize this based on your JobSeeker model fields -->
+    <p>Name: {{ jobseeker.name }}</p>
+    <p>Email: {{ jobseeker.email }}</p>
+    <!-- Add other details as needed -->
+{% endblock %}
+
+

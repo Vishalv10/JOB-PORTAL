@@ -1,0 +1,102 @@
+{% extends "nav.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('{% static "images/job4.jpg" %}');
+        background-repeat: no-repeat;
+        background-size: 1100px;
+        background-color: black;
+    }
+
+    .login-container {
+        max-width: 300px;
+        margin: 100px 0 0 50px; /* Adjust margin to add space from the left */
+        padding: 20px;
+        background-color: rgba(255, 0, 0, 0.0);
+        background-blend-mode: color;
+    }
+
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: white;
+    }
+
+    .login-container input {
+        display: block;
+        margin-bottom: 15px;
+        color: blue;
+    }
+
+    .login-container label {
+        display: block;
+        margin-bottom: 15px;
+        color: white;
+    }
+
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .login-container button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    .login-container button:hover {
+        background-color: #0056b3;
+    }
+    .messages{
+        color:white;
+    }
+</style>
+{% if error_messages %}
+    <div class="messages">
+        {% for message in error_messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form action="{% url 'login1' %}" method="post">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"  required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

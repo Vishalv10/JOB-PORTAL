@@ -1,0 +1,167 @@
+<!-- nav1.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0; /* Remove default body margin */
+        }
+
+        .navbar {
+            background-color: black;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 20px;
+            width: 150px;
+            left: 0; /* Position navbar at the left */
+            top: 0; /* Position navbar at the top */
+        }
+
+        .navbar-brand {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .navbar-nav {
+            margin-top: 20px;
+        }
+
+        .nav-item {
+            padding: 10px 0;
+        }
+
+        .dropdown-menu {
+            background-color: #343a40;
+        }
+
+        .dropdown-item {
+            color: white;
+        }
+
+        .content-container {
+            margin-left: 170px;
+            {% comment %} padding: 20px; {% endcomment %}
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .fa-bell {
+            font-size: 24px;
+        }
+        
+        #notification-count {
+            {% comment %} background-color: red; {% endcomment %}
+            color: red;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="navbar-brand">
+        <br>
+        <a href="{% url 'admin_profile' %}">Profile</a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'admin_jobs' %}">All Jobs</a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'view_jobseekers' %}">View Job Seekers</a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'view_employers' %}">View Employers</a>
+        <br>
+        <br>
+        <br>
+        {% comment %} <a href="{% url 'notifications' %}"> {% endcomment %}
+            <a href="{% url 'notifications' %}" id="notifications-link">
+                Notifications
+                <span id="notification-count" class="notification-count">
+                    {% if notification_count > 0 %}
+                        {{ notification_count }}
+                    {% endif %}
+                </span>
+            </a>
+        <br>
+        <br>
+        <br>
+        <a href="javascript:void(0);" onclick="confirmLogout()">Logout</a>
+
+    </div>
+</nav>
+
+<div class="content-container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<script>
+    function confirmLogout() {
+        // Display a confirmation dialog
+        var result = confirm("Are you sure you want to logout?");
+
+        // If the user clicks "OK," proceed with logout
+        if (result) {
+            window.location.href = "{% url 'logoutviews' %}"; // Redirect to logout view
+        }
+    }
+
+   
+        function updateNotificationCount() {
+            console.log('Updating notification count...');
+            fetch("{% url 'custom_notification_count_api' %}")
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Received data:', data);
+                    const countElement = document.getElementById('notification-count');
+                    if (data.count > 0) {
+                        countElement.textContent = data.count;
+                    } else {
+                        countElement.textContent = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching notification count:', error);
+                });
+        }
+    
+        // Update the notification count when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded. Updating notification count...');
+            updateNotificationCount();
+        });
+    
+        // Update the notification count every X seconds (e.g., every 30 seconds)
+        setInterval(function() {
+            console.log('Updating notification count...');
+            updateNotificationCount();
+        }, 30000);  // Adjust the interval as needed
+
+    
+    
+</script>
+
+
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,18 @@
+<!-- newjobseeker_details.html -->
+{% extends 'nav1.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <h2>Job Seeker Details</h2>
+
+    <p>Name: {{ jobseeker.name }}</p>
+    <p>Email: {{ jobseeker.email }}</p>
+    <p>Mobile: {{ jobseeker.mobile }}</p>
+    <p>DOB: {{ jobseeker.dob }}</p>
+    <p>Username: {{ jobseeker.username }}</p>
+    <p>Education: {{ jobseeker.educational_info }}</p>
+    <p>Address: {{ jobseeker.address }}</p>
+    <!-- Add any other details you want to display -->
+
+    <!-- ... (other details) -->
+  </div>
+{% endblock %}

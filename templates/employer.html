@@ -1,0 +1,148 @@
+{% extends 'nav3.html' %}
+{% block content %}
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    h2, h3 {
+        color: #007bff;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    img {
+        max-width: 100px;
+        height: auto;
+        margin-right: 20px;
+    }
+
+    .job-details {
+        flex-grow: 1;
+    }
+
+    strong {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 18px;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+
+    /* Adjust styles based on your color preferences */
+    .edit-button a button {
+        padding: 8px 12px;
+        background-color: blue;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .delete-button a button {
+        padding: 8px 12px;
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .applicants-button a button {
+        padding: 8px 12px;
+        background-color: green;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .notification {
+        padding: 15px;
+        border: 1px solid #d6e9c6;
+        border-radius: 4px;
+        color: white;
+        background-color: red;
+        animation: blinkAnimation 1s infinite;
+    }
+
+    @keyframes blinkAnimation {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<div class="container">
+{% if notification_count > 0 %}
+    <div class="notification">
+        You have received new notifications.
+    </div>
+{% endif %}
+    <h2>{{ employer_profile.company_name }} Dashboard</h2>
+    <h3>Your Jobs (Total: {{ jobs.count }})</h3>
+    <ul>
+        {% for job in jobs %}
+            {% if job.is_approved %}
+                <li>
+                    {% if job.image %}
+                        <img src="{{ job.image.url }}" alt="{{ job.designation }} Image">
+                    {% endif %}
+                    <div class="job-details">
+                        <strong>{{ job.designation }}</strong>
+                        <br>
+                        Description: {{ job.description }}
+                        <br>
+                        Location: {{ job.location }}
+                        <br>
+                        Last Date: {{ job.last_date }}
+                        <br>
+                        Job Type: {{ job.type }}
+                        <br>
+                        Posting Date: {{ job.posting_date }}
+                        <br>
+                        Number of Applicants: {{ job.num_applicants }}
+                    </div>
+                    <div class="buttons">
+                        <div class="edit-button">
+                            <a href="{% url 'edit_job' job.id %}"><button>Edit</button></a>
+                        </div>
+                        <div class="delete-button">
+                            <a href="{% url 'delete_job' job.id %}"><button>Delete</button></a>
+                        </div>
+                        <div class="applicants-button">
+                            <a href="{% url 'view_applicants' job.id %}"><button>View Applicants</button></a>
+                        </div>
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,55 @@
+<!-- nav4.html -->
+
+<style>
+    .horizontal-navbar {
+        background-color: black;
+        overflow: hidden;
+        margin: 0; /* Remove any margin */
+        padding: 0; /* Remove any padding */
+        width: 100%;
+    }
+
+    .horizontal-navbar ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex; /* Use flexbox to make the list items horizontal */
+    }
+
+    .horizontal-navbar li {
+        margin-right: 20px; /* Add spacing between items if desired */
+    }
+
+    .horizontal-navbar li:last-child {
+        margin-right: 0; /* Remove margin from the last item */
+        margin-left: auto; /* Align the last item to the far right */
+    }
+
+    .horizontal-navbar li a {
+        color: white;
+        text-decoration: none;
+        padding: 30px 20px;
+        display: block;
+    }
+</style>
+
+<div class="horizontal-navbar">
+    <ul>
+        <li style="margin-left: auto;">
+        <a href="javascript:void(0);" onclick="confirmLogout()">Logout</a>
+        </li>
+    </ul>
+</div>
+
+
+<script>
+    function confirmLogout() {
+        // Display a confirmation dialog
+        var result = confirm("Are you sure you want to logout?");
+
+        // If the user clicks "OK," proceed with logout
+        if (result) {
+            window.location.href = "{% url 'logoutviews' %}"; // Redirect to logout view
+        }
+    }
+</script>

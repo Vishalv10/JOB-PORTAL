@@ -1,0 +1,78 @@
+{% extends 'nav1.html' %}
+{% block content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa; /* Bootstrap's light grey background color */
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #007bff; /* Bootstrap's primary color */
+    }
+
+    strong {
+        color: #333;
+    }
+
+    p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin-top: 15px;
+        background-color: #28a745; /* Bootstrap's success color */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #218838; /* Slightly darker shade on hover */
+    }
+</style>
+
+<div class="container mt-5">
+    <h2>Job Details</h2>
+    
+    
+    <p><strong>Company Name:</strong> {{ job.employer_profile.company_name }}</p>
+    <p><strong>Designation:</strong> {{ job.designation }}</p>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Posting Date:</strong> {{ job.posting_date }}</p>
+    <p><strong>Last Date:</strong> {{ job.last_date }}</p>
+
+    {% if request.user.is_staff %}
+        {% if not job.is_approved %}
+            <form method="post" action="{% url 'approve_job' job.id %}">
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+        {% endif %}
+        <form method="post" action="{% url 'disapprove_job' job.id %}">
+            {% csrf_token %}
+            <button type="submit">Disapprove</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

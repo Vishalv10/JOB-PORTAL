@@ -1,0 +1,168 @@
+{% extends 'nav3.html' %}
+{% block content %}
+<style>
+    /* Add your custom styles here */
+
+    .page-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .applicant-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .applicant-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .applicant-info {
+        width: 70%;
+    }
+
+    .profile-picture {
+        max-width: 150px;
+        margin-bottom: 10px;
+        align-self: flex-end;
+        height: 150px;
+    }
+
+    .select-button,
+    .reject-button
+     {
+        padding: 8px 12px;
+        border: none;
+        cursor: pointer;
+        align-self: flex-start;
+    }
+
+    .select-button {
+        background-color: #4caf50;
+        color: #fff;
+    }
+
+    .select-button:hover {
+        background-color: #45a049;
+    }
+
+    .reject-button {
+        background-color: #f44336;
+        color: #fff;
+        margin-top: 30px;
+        
+    }
+
+    .reject-button:hover {
+        background-color: #d32f2f;
+    }
+
+    .selected-text {
+        background-color: #2196F3;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px;
+        font-weight: bold;
+        
+    }
+
+    .rejected-text {
+        background-color: #f44336;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        display: inline-block; /* Display as inline-block to wrap around the text */
+        clear: both;
+    }
+    
+    
+
+    
+</style>
+
+<div class="container mt-5">
+    <h2 class="page-title">Applicants for {{ job.designation }}</h2>
+    <ul class="applicant-list">
+        {% for applicant in applicants %}
+            <li class="applicant-item">
+                <div class="applicant-info">
+                    <strong>Job Seeker:</strong> {{ applicant.jobseeker.username }}<br>
+                    <strong>Name:</strong> {{ applicant.jobseeker.jobseekerprofile.name }}<br>
+                    <strong>Email:</strong> {{ applicant.jobseeker.jobseekerprofile.email }}<br>
+                    <strong>Mobile:</strong> {{ applicant.jobseeker.jobseekerprofile.mobile }}<br>
+                    <strong>Education:</strong> {{ applicant.jobseeker.jobseekerprofile.educational_info }}<br>
+                    <strong>Application Date:</strong> {{ applicant.application_date }}<br><br>
+                    
+                    {% comment %} <form method="post" action="{% url 'select_applicant' job.id applicant.jobseeker.id %}">
+                        {% csrf_token %}
+                        <button class="select-button" type="submit">Select</button>
+                    </form> {% endcomment %}
+
+                    <form method="post" action="{% url 'select_applicant' job.id applicant.jobseeker.id %}">
+                        {% csrf_token %}
+                        {% if applicant.selected %}
+                            <span class="selected-text">Selected</span>
+                        {% else %}
+                            <button class="select-button" type="submit">Select</button>
+                        {% endif %}
+                    </form>
+                    
+                    {% comment %} <form method="post" action="{% url 'reject_applicant' job.id applicant.jobseeker.id %}">
+                        {% csrf_token %}
+                        <button class="reject-button" type="submit">Reject</button>
+                    </form> {% endcomment %}
+                    
+
+
+                    
+                    
+                    <form method="post" action="{% url 'reject_applicant' job.id applicant.jobseeker.id %}">
+                        {% csrf_token %}
+                        {% if applicant.rejected %}
+                            <span class="rejected-text">Rejected</span>
+                        {% else %}
+                            <button class="reject-button" type="submit">Reject</button>
+                        {% endif %}
+                    </form>
+                    
+
+
+
+
+                    
+                </div>
+
+                {% if applicant.jobseeker.jobseekerprofile.profile_picture %}
+                    <img class="profile-picture" src="{{ applicant.jobseeker.jobseekerprofile.profile_picture.url }}" alt="Profile Picture">
+                {% endif %}
+
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+

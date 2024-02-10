@@ -1,0 +1,212 @@
+{% extends 'nav3.html' %}
+{% block content %}
+<style>
+    /* Add your custom styles here */
+
+    .edit-profile-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-form {
+        display: grid;
+        grid-row-gap: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .current-logo {
+        max-width: 100px;
+        max-height: 100px;
+        margin-top: 10px;
+    }
+
+    .submit-button {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .password-link {
+        text-decoration: none;
+        color: #333;
+        border-bottom: 1px solid #333;
+    }
+
+    .password-link:hover {
+        color: #f44336;
+        border-bottom: 1px solid #f44336;
+    }
+    
+</style>
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+
+    <div class="edit-profile-container">
+        <h2>Edit Employer Profile</h2>
+        <form class="profile-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="company_name">Company Name:</label>
+                <input type="text" name="company_name" value="{{ employer_profile.company_name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" name="username" value="{{ employer_profile.username }}">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" value="{{ employer_profile.email }}">
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile:</label>
+                <input type="text" name="mobile" value="{{ employer_profile.mobile }}">
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website:</label>
+                <input type="url" name="website" value="{{ employer_profile.website }}">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <textarea name="address">{{ employer_profile.address }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="logo">Logo:</label>
+                {% if employer_profile.logo %}
+                    <img src="{{ employer_profile.logo.url }}" alt="Current Logo" class="current-logo">
+                {% endif %}
+                <input type="file" name="logo">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save Changes" class="submit-button">
+            </div>
+
+            <div class="form-group">
+                <a href="{% url 'employer_password' %}" class="password-link">Update Password</a>
+            </div>
+        </form>
+    </div>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('.profile-form');
+            const companyNameInput = document.querySelector('input[name="company_name"]');
+            const usernameInput = document.querySelector('input[name="username"]');
+            const addressInput = document.querySelector('textarea[name="address"]');
+            const mobileInput = document.querySelector('input[name="mobile"]');
+            const emailInput = document.querySelector('input[name="email"]');
+            const websiteInput = document.querySelector('input[name="website"]');
+        
+            form.addEventListener('submit', function (event) {
+                let valid = true;
+        
+                // Function to display error messages
+                function showError(element, message) {
+                    const errorContainer = document.createElement('div');
+                    errorContainer.className = 'error-message';
+                    errorContainer.innerText = message;
+        
+                    const parent = element.parentElement;
+                    parent.appendChild(errorContainer);
+        
+                    // Remove the error message after 3 seconds (adjust as needed)
+                    setTimeout(() => {
+                        parent.removeChild(errorContainer);
+                    }, 3000);
+                }
+        
+                // Check if company name is empty
+                if (companyNameInput.value.trim() === '') {
+                    valid = false;
+                    showError(companyNameInput, 'Company Name cannot be empty.');
+                }
+        
+                // Check if username is empty
+                if (usernameInput.value.trim() === '') {
+                    valid = false;
+                    showError(usernameInput, 'Username cannot be empty.');
+                }
+        
+                // Check if address is empty
+                if (addressInput.value.trim() === '') {
+                    valid = false;
+                    showError(addressInput, 'Address cannot be empty.');
+                }
+        
+                // Mobile Number Validation
+                const mobileRegex = /^\d{10}$/;
+                if (!mobileRegex.test(mobileInput.value)) {
+                    valid = false;
+                    showError(mobileInput, 'Please enter a valid 10-digit mobile number.');
+                }
+        
+                // Email Validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(emailInput.value)) {
+                    valid = false;
+                    showError(emailInput, 'Please enter a valid email address.');
+                }
+        
+                // Website Validation
+                const websiteRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+                if (!websiteRegex.test(websiteInput.value)) {
+                    valid = false;
+                    showError(websiteInput, 'Please enter a valid website URL.');
+                }
+        
+                if (!valid) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+        });
+        
+    </script>
+
+
+   
+
+
+
+{% endblock %}
+
+
+
+
+

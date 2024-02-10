@@ -1,0 +1,78 @@
+<!-- delete_job.html -->
+
+{% extends 'nav3.html' %}
+
+{% block content %}
+  <div class="delete-job-container">
+    <div class="card">
+      <h2>Delete Job</h2>
+      <p>Are you sure you want to delete the job "{{ job.designation }}"?</p>
+
+      <form method="post" action="{% url 'delete_job' job.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <button type="submit">Delete</button>
+        </div>
+      </form>
+
+      <div class="cancel-link">
+        <a href="{% url 'employer' %}">
+          <button class="cancel-button">Cancel</button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <style>
+    .delete-job-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 500px;
+      margin-right: 150px;
+
+    }
+
+    .card {
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #f44336;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cancel-link {
+      margin-top: 10px;
+    }
+
+    .cancel-button {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    .cancel-button:hover {
+      background-color: #ddd;
+    }
+  </style>
+{% endblock %}
